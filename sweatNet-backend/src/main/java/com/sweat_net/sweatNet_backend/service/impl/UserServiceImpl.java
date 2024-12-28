@@ -1,6 +1,7 @@
 package com.sweat_net.sweatNet_backend.service.impl;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -62,8 +63,23 @@ public class UserServiceImpl implements UserServise {
 
     @Override
     public UserResponse getUserById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserById'");
+
+        return userRepository.findById(id)
+                .map(user -> UserResponse.builder()
+                        .id(user.getId())
+                        .username(user.getUsername())
+                        .email(user.getEmail())
+                        .bio(user.getBio())
+                        .image(user.getImage())
+                        .createdAt(user.getCreatedAt())
+                        .followers(user.getFollowers())
+                        .following(user.getFollowing())
+                        .build())
+                .orElseThrow(() -> {
+                    log.warn("User not found for id: {}", id);
+                    return new IllegalArgumentException("User not found for id: " + id);
+                });
+
     }
 
     @Override
