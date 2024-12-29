@@ -9,7 +9,7 @@ public class UserRequest {
 
     private String username;
     private String email;
-    private String passward;
+    private String password;
     private String bio;
     private String image;
     private LocalDate createdAt;

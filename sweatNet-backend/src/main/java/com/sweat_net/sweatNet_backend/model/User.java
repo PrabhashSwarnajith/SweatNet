@@ -24,7 +24,7 @@ public class User {
     private String username;
     @Indexed(unique = true)
     private String email;
-    private String passward;
+    private String password;
     private String bio;
     private String image;
     private LocalDate createdAt;

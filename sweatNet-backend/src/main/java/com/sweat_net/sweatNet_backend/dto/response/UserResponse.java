@@ -13,7 +13,7 @@ public class UserResponse {
     private String id;
     private String username;
     private String email;
-    private String passward;
+    private String password;
     private String bio;
     private String image;
     private LocalDate createdAt;

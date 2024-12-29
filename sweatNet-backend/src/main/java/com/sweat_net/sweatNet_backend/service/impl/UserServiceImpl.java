@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserServise {
     public UserMResponse register(UserRequest userRequest) {
 
         if (userRequest.getUsername().isEmpty() || userRequest.getEmail().isEmpty()
-                || userRequest.getPassward().isEmpty()) {
+                || userRequest.getPassword().isEmpty()) {
             log.warn("Invalid input data {username: {}, email: {}}", userRequest.getUsername(), userRequest.getEmail());
             return UserMResponse.builder()
                     .UserId(null)
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserServise {
         User user = User.builder()
                 .username(userRequest.getUsername())
                 .email(userRequest.getEmail())
-                .passward(userRequest.getPassward())
+                .password(userRequest.getPassword())
                 .createdAt(LocalDate.now())
                 .build();
 
@@ -84,14 +84,51 @@ public class UserServiceImpl implements UserServise {
 
     @Override
     public UserMResponse updateUser(String id, UserRequest userRequest) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateUser'");
+
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isEmpty()) {
+            log.warn("User not found for id: {}", id);
+            return UserMResponse.builder()
+                    .UserId(null)
+                    .massage("User not found")
+                    .build();
+        }
+
+        User user = userOptional.get();
+
+        if (!userRequest.getUsername().isEmpty()) {
+            user.setUsername(userRequest.getUsername());
+        }
+
+        if (!userRequest.getEmail().isEmpty()) {
+            user.setEmail(userRequest.getEmail());
+        }
+
+        if (!userRequest.getPassword().isEmpty()) {
+            user.setPassword(userRequest.getPassword());
+        }
+
+        if (!userRequest.getBio().isEmpty()) {
+            user.setBio(userRequest.getBio());
+        }
+
+        if (!userRequest.getImage().isEmpty()) {
+            user.setImage(userRequest.getImage());
+        }
+
+        userRepository.save(user);
+        log.info("User updated successfully {id: {}}", user.getId());
+
+        return UserMResponse.builder()
+                .UserId(user.getId())
+                .massage("User updated successfully")
+                .build();
     }
 
     @Override
     public UserMResponse deleteUser(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
+
     }
 
 }
