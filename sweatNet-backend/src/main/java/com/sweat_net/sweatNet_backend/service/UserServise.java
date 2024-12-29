@@ -1,17 +1,15 @@
 package com.sweat_net.sweatNet_backend.service;
 
-import com.sweat_net.sweatNet_backend.dto.request.UserRequest;
-import com.sweat_net.sweatNet_backend.dto.response.UserMResponse;
-import com.sweat_net.sweatNet_backend.dto.response.UserResponse;
+import com.sweat_net.sweatNet_backend.dto.UserDTO;
 
 public interface UserServise {
 
-    UserMResponse register(UserRequest userRequest);
+    UserDTO register(UserDTO userRequest);
 
-    UserResponse getUserById(String id);
+    UserDTO getUserById(String id);
 
-    UserMResponse updateUser(String id, UserRequest userRequest);
+    UserDTO updateUser(String id, UserDTO userRequest);
 
-    UserMResponse deleteUser(String id);
+    UserDTO deleteUser(String id);
 
 }

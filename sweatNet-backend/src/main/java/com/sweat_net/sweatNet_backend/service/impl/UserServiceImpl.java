@@ -5,9 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.sweat_net.sweatNet_backend.dto.request.UserRequest;
-import com.sweat_net.sweatNet_backend.dto.response.UserMResponse;
-import com.sweat_net.sweatNet_backend.dto.response.UserResponse;
+import com.sweat_net.sweatNet_backend.dto.UserDTO;
 import com.sweat_net.sweatNet_backend.model.User;
 import com.sweat_net.sweatNet_backend.repository.UserRepository;
 import com.sweat_net.sweatNet_backend.service.UserServise;
@@ -23,13 +21,13 @@ public class UserServiceImpl implements UserServise {
     private final UserRepository userRepository;
 
     @Override
-    public UserMResponse register(UserRequest userRequest) {
+    public UserDTO register(UserDTO userRequest) {
 
         if (userRequest.getUsername().isEmpty() || userRequest.getEmail().isEmpty()
                 || userRequest.getPassword().isEmpty()) {
             log.warn("Invalid input data {username: {}, email: {}}", userRequest.getUsername(), userRequest.getEmail());
-            return UserMResponse.builder()
-                    .UserId(null)
+            return UserDTO.builder()
+                    .userId(null)
                     .message("Username, email, or password cannot be empty")
                     .build();
         }
@@ -39,7 +37,7 @@ public class UserServiceImpl implements UserServise {
             log.info("User already exists {username: {}, email: {}}", userRequest.getUsername(),
                     userRequest.getEmail());
 
-            return UserMResponse.builder()
+            return UserDTO.builder()
                     .message("User already exists")
                     .build();
         }
@@ -54,19 +52,19 @@ public class UserServiceImpl implements UserServise {
         userRepository.save(user);
         log.info("User created successfully {id: {}}", user.getId());
 
-        return UserMResponse.builder()
-                .UserId(user.getId())
+        return UserDTO.builder()
+                .userId(user.getId())
                 .message("User created successfully")
                 .build();
 
     }
 
     @Override
-    public UserResponse getUserById(String id) {
+    public UserDTO getUserById(String id) {
 
         return userRepository.findById(id)
-                .map(user -> UserResponse.builder()
-                        .id(user.getId())
+                .map(user -> UserDTO.builder()
+                        .userId(user.getId())
                         .username(user.getUsername())
                         .email(user.getEmail())
                         .bio(user.getBio())
@@ -83,14 +81,14 @@ public class UserServiceImpl implements UserServise {
     }
 
     @Override
-    public UserMResponse updateUser(String id, UserRequest userRequest) {
+    public UserDTO updateUser(String id, UserDTO userRequest) {
 
         Optional<User> userOptional = userRepository.findById(id);
 
         if (userOptional.isEmpty()) {
             log.warn("User not found for id: {}", id);
-            return UserMResponse.builder()
-                    .UserId(null)
+            return UserDTO.builder()
+                    .userId(null)
                     .message("User not found")
                     .build();
         }
@@ -125,26 +123,26 @@ public class UserServiceImpl implements UserServise {
         userRepository.save(user);
         log.info("User updated successfully and saved to the database for id: {}", id);
 
-        return UserMResponse.builder()
-                .UserId(user.getId())
+        return UserDTO.builder()
+                .userId(user.getId())
                 .message("User updated successfully")
                 .build();
     }
 
     @Override
-    public UserMResponse deleteUser(String id) {
+    public UserDTO deleteUser(String id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty()) {
             log.warn("User not found for id: {}", id);
-            return UserMResponse.builder()
-                    .UserId(null)
+            return UserDTO.builder()
+                    .userId(null)
                     .message("User not found")
                     .build();
         }
         userRepository.deleteById(id);
         log.info("User deleted successfully for id: {}", id);
-        return UserMResponse.builder()
-                .UserId(id)
+        return UserDTO.builder()
+                .userId(id)
                 .message("User deleted successfully")
                 .build();
     }

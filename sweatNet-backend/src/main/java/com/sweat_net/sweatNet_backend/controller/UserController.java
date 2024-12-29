@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sweat_net.sweatNet_backend.dto.request.UserRequest;
-import com.sweat_net.sweatNet_backend.dto.response.UserMResponse;
-import com.sweat_net.sweatNet_backend.dto.response.UserResponse;
+import com.sweat_net.sweatNet_backend.dto.UserDTO;
 import com.sweat_net.sweatNet_backend.service.UserServise;
 
 import lombok.AllArgsConstructor;
@@ -24,22 +22,22 @@ public class UserController {
     private final UserServise userServise;
 
     @PostMapping("/register")
-    public UserMResponse register(@RequestBody UserRequest userRequest) {
+    public UserDTO register(@RequestBody UserDTO userRequest) {
         return userServise.register(userRequest);
     }
 
     @GetMapping("/{id}/profile")
-    public UserResponse getUserById(@PathVariable String id) {
+    public UserDTO getUserById(@PathVariable String id) {
         return userServise.getUserById(id);
     }
 
     @PutMapping("/{id}/profile")
-    public UserMResponse updateUser(@PathVariable String id, @RequestBody UserRequest userRequest) {
+    public UserDTO updateUser(@PathVariable String id, @RequestBody UserDTO userRequest) {
         return userServise.updateUser(id, userRequest);
     }
 
     @DeleteMapping("{id}/profile")
-    public UserMResponse deleteUser(@PathVariable String id) {
+    public UserDTO deleteUser(@PathVariable String id) {
         return userServise.deleteUser(id);
     }
 

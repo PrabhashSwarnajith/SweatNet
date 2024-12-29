@@ -1,4 +1,4 @@
-package com.sweat_net.sweatNet_backend.dto.response;
+package com.sweat_net.sweatNet_backend.dto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,9 +11,9 @@ import lombok.Data;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserResponse {
-
-    private String id;
+public class UserDTO {
+    private String userId;
+    private String message;
     private String username;
     private String email;
     private String password;
