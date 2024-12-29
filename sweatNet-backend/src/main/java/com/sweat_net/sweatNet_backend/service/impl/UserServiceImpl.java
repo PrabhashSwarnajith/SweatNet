@@ -133,7 +133,20 @@ public class UserServiceImpl implements UserServise {
 
     @Override
     public UserMResponse deleteUser(String id) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            log.warn("User not found for id: {}", id);
+            return UserMResponse.builder()
+                    .UserId(null)
+                    .message("User not found")
+                    .build();
+        }
+        userRepository.deleteById(id);
+        log.info("User deleted successfully for id: {}", id);
+        return UserMResponse.builder()
+                .UserId(id)
+                .message("User deleted successfully")
+                .build();
     }
 
 }
