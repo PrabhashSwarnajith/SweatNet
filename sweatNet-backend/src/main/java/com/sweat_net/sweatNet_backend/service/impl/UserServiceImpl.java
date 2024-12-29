@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserServise {
             log.warn("Invalid input data {username: {}, email: {}}", userRequest.getUsername(), userRequest.getEmail());
             return UserMResponse.builder()
                     .UserId(null)
-                    .massage("Username, email, or password cannot be empty")
+                    .message("Username, email, or password cannot be empty")
                     .build();
         }
 
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserServise {
                     userRequest.getEmail());
 
             return UserMResponse.builder()
-                    .massage("User already exists")
+                    .message("User already exists")
                     .build();
         }
 
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserServise {
 
         return UserMResponse.builder()
                 .UserId(user.getId())
-                .massage("User created successfully")
+                .message("User created successfully")
                 .build();
 
     }
@@ -91,44 +91,49 @@ public class UserServiceImpl implements UserServise {
             log.warn("User not found for id: {}", id);
             return UserMResponse.builder()
                     .UserId(null)
-                    .massage("User not found")
+                    .message("User not found")
                     .build();
         }
 
         User user = userOptional.get();
 
-        if (!userRequest.getUsername().isEmpty()) {
+        if (userRequest.getUsername() != null && !userRequest.getUsername().isEmpty()) {
+            log.info("Username updated successfully for id: {}", id);
             user.setUsername(userRequest.getUsername());
         }
 
-        if (!userRequest.getEmail().isEmpty()) {
+        if (userRequest.getEmail() != null && !userRequest.getEmail().isEmpty()) {
+            log.info("Email updated successfully for id: {}", id);
             user.setEmail(userRequest.getEmail());
         }
 
-        if (!userRequest.getPassword().isEmpty()) {
+        if (userRequest.getPassword() != null && !userRequest.getPassword().isEmpty()) {
+            log.info("Password updated successfully for id: {}", id);
             user.setPassword(userRequest.getPassword());
         }
 
-        if (!userRequest.getBio().isEmpty()) {
+        if (userRequest.getBio() != null && !userRequest.getBio().isEmpty()) {
+            log.info("Bio updated successfully for id: {}", id);
             user.setBio(userRequest.getBio());
         }
 
-        if (!userRequest.getImage().isEmpty()) {
+        if (userRequest.getImage() != null && !userRequest.getImage().isEmpty()) {
+            log.info("Image updated successfully for id: {}", id);
             user.setImage(userRequest.getImage());
         }
 
         userRepository.save(user);
-        log.info("User updated successfully {id: {}}", user.getId());
+        log.info("User updated successfully and saved to the database for id: {}", id);
 
         return UserMResponse.builder()
                 .UserId(user.getId())
-                .massage("User updated successfully")
+                .message("User updated successfully")
                 .build();
     }
 
     @Override
     public UserMResponse deleteUser(String id) {
-
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
 }
